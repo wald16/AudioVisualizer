@@ -45,8 +45,8 @@ const Visualizer2: React.FC = () => {
 
             const maxRadius = Math.min(centerX, centerY);
 
-            const ringCount = 8;
-            const angleStep = (Math.PI * 2) / 30;
+            const ringCount = 5;
+            const angleStep = (Math.PI * 3) / 40;
 
             for (let i = 0; i < ringCount; i++) {
                 const radius = (i + 1) * (maxRadius / ringCount) * (1 + pulse * 0.5);
