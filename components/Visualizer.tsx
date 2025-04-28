@@ -107,7 +107,7 @@ const Visualizer: React.FC<VisualizerProps> = ({ audioRef }) => {
 
                 analyser.getByteFrequencyData(dataArray);
 
-                ctx.fillStyle = 'rgba(14,14,26,0.3)';
+                ctx.fillStyle = 'rgba(70, 43, 70, 0.3)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 const bassRange = dataArray.slice(0, bufferLength / 4);
