@@ -1,24 +1,22 @@
 'use client';
 
 import React, { useRef } from 'react';
+import { useAudio } from '@/contexts/AudioContext';
 import styled from 'styled-components';
-import { useAudio } from '@/hooks/useAudio';
 
 const UploadButton = () => {
-    const { loadAudio, play } = useAudio();
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const { loadAudio, play } = useAudio();
 
     const handleUploadClick = () => {
         fileInputRef.current?.click();
     };
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
             loadAudio(file);
-            setTimeout(() => {
-                play();
-            }, 500); // slight delay to allow file loading
+            play();
         }
     };
 

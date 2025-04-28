@@ -2,27 +2,27 @@ import React from 'react';
 import styled from 'styled-components';
 
 const PartyButton = () => {
-    return (
-        <StyledWrapper>
-            <button className="uiverse">
-                <div className="wrapper">
-                    <span>UIVERSE</span>
-                    <div className="circle circle-12" />
-                    <div className="circle circle-11" />
-                    <div className="circle circle-10" />
-                    <div className="circle circle-9" />
-                    <div className="circle circle-8" />
-                    <div className="circle circle-7" />
-                    <div className="circle circle-6" />
-                    <div className="circle circle-5" />
-                    <div className="circle circle-4" />
-                    <div className="circle circle-3" />
-                    <div className="circle circle-2" />
-                    <div className="circle circle-1" />
-                </div>
-            </button>
-        </StyledWrapper>
-    );
+  return (
+    <StyledWrapper>
+      <button className="uiverse">
+        <div className="wrapper">
+          <span>LOCURA</span>
+          <div className="circle circle-12" />
+          <div className="circle circle-11" />
+          <div className="circle circle-10" />
+          <div className="circle circle-9" />
+          <div className="circle circle-8" />
+          <div className="circle circle-7" />
+          <div className="circle circle-6" />
+          <div className="circle circle-5" />
+          <div className="circle circle-4" />
+          <div className="circle circle-3" />
+          <div className="circle circle-2" />
+          <div className="circle circle-1" />
+        </div>
+      </button>
+    </StyledWrapper>
+  );
 }
 
 const StyledWrapper = styled.div`
