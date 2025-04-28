@@ -1,40 +1,73 @@
 'use client';
 
-import { createContext, useContext, useRef } from 'react';
+import { createContext, useContext, useRef, useEffect, useState } from 'react';
 
-type AudioContextType = {
+interface AudioContextType {
     audioRef: React.RefObject<HTMLAudioElement>;
-    loadAudio: (file: File) => void;
-    play: () => void;
-};
+    analyserRef: React.RefObject<AnalyserNode | null>;
+    isPlaying: boolean;
+}
 
-const AudioContextReact = createContext<AudioContextType | null>(null);
+const AudioContextApp = createContext<AudioContextType | undefined>(undefined);
 
-export function AudioProvider({ children }: { children: React.ReactNode }) {
+export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     const audioRef = useRef<HTMLAudioElement>(null);
+    const analyserRef = useRef<AnalyserNode | null>(null);
+    const audioContextRef = useRef<AudioContext | null>(null);
+    const sourceNodeRef = useRef<MediaElementAudioSourceNode | null>(null);
+    const [isPlaying, setIsPlaying] = useState(false); // <-- NEW
 
-    const loadAudio = (file: File) => {
-        const url = URL.createObjectURL(file);
-        if (audioRef.current) {
-            audioRef.current.src = url;
-        }
-    };
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        if (!audioRef.current) return;
 
-    const play = () => {
-        audioRef.current?.play();
-    };
+        const setupAudio = async () => {
+            if (!audioContextRef.current) {
+                audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+            }
+            if (!sourceNodeRef.current) {
+                const source = audioContextRef.current.createMediaElementSource(audioRef.current);
+                const analyser = audioContextRef.current.createAnalyser();
+                analyser.fftSize = 512;
+
+                source.connect(analyser);
+                analyser.connect(audioContextRef.current.destination);
+
+                sourceNodeRef.current = source;
+                analyserRef.current = analyser;
+            }
+
+            if (audioContextRef.current.state === 'suspended') {
+                await audioContextRef.current.resume();
+            }
+        };
+
+        audioRef.current.addEventListener('play', async () => {
+            await setupAudio();
+            setIsPlaying(true); // <-- SET isPlaying to true
+        });
+
+        audioRef.current.addEventListener('pause', () => {
+            setIsPlaying(false);
+        });
+
+        return () => {
+            audioRef.current?.removeEventListener('play', setupAudio);
+            audioContextRef.current?.close();
+        };
+    }, []);
 
     return (
-        <AudioContextReact.Provider value={{ audioRef, loadAudio, play }}>
+        <AudioContextApp.Provider value={{ audioRef, analyserRef, isPlaying }}>
             {children}
-        </AudioContextReact.Provider>
+        </AudioContextApp.Provider>
     );
-}
+};
 
-export function useAudio() {
-    const context = useContext(AudioContextReact);
+export const useAudio = () => {
+    const context = useContext(AudioContextApp);
     if (!context) {
-        throw new Error('useAudio must be used inside an AudioProvider');
+        throw new Error('useAudio must be inside AudioProvider');
     }
     return context;
-}
+};

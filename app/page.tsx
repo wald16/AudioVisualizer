@@ -4,7 +4,7 @@ import { AudioProvider } from '@/contexts/AudioContext'; // <- Wrap everything
 import PartyButton from '@/components/PartyButton';
 import UploadButton from '@/components/UploadButton';
 import ChangeThemeButton from '@/components/ChangeThemeButton';
-import Visualizer from '@/components/Visualizer';
+import Visualizer from '@/components/VisualizerWrapper';
 import { useAudio } from '@/contexts/AudioContext';
 
 export default function HomePage() {

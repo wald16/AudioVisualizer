@@ -1,24 +1,11 @@
 'use client';
+import { useContext } from 'react';
+import { AudioContextApp } from '@/contexts/AudioContext';
 
-import { useRef } from 'react';
-
-export function useAudio() {
-    const audioRef = useRef<HTMLAudioElement>(null);
-
-    const loadAudio = (file: File) => {
-        const url = URL.createObjectURL(file);
-        if (audioRef.current) {
-            audioRef.current.src = url;
-        }
-    };
-
-    const play = () => {
-        audioRef.current?.play();
-    };
-
-    return {
-        audioRef,
-        loadAudio,
-        play,
-    };
-}
+export const useAudio = () => {
+    const context = useContext(AudioContextApp);
+    if (!context) {
+        throw new Error('useAudio must be inside AudioProvider');
+    }
+    return context;
+};
