@@ -34,10 +34,10 @@ const Visualizer4: React.FC = () => {
 
             constructor() {
                 this.points = [];
-                for (let x = 0; x < canvas.width; x += 40) {
+                for (let x = 0; x < canvas!.width; x += 40) {
                     this.points.push({
                         x,
-                        y: canvas.height / 2,
+                        y: canvas!.height / 2,
                         amplitude: Math.random() * 20 + 60,
                         frequency: Math.random() * 0.02 + 0.005,
                         phase: Math.random() * Math.PI * 2,

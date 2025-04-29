@@ -38,8 +38,8 @@ const Visualizer3: React.FC = () => {
             color: string;
 
             constructor() {
-                this.x = canvas.width / 2;
-                this.y = canvas.height / 2;
+                this.x = canvas!.width / 2;
+                this.y = canvas!.height / 2;
                 const angle = Math.random() * 2 * Math.PI;
                 this.baseSpeed = Math.random() * 1 + 0.5;
                 this.velocityX = Math.cos(angle) * this.baseSpeed;
