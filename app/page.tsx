@@ -23,7 +23,7 @@ function HomePageContent() {
 
   return (
     <div className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-[#1a1a2e] to-[#0e0e1a]">
-      <Visualizer audioRef={audioRef} />
+      <Visualizer />
 
       {/* Eye Button */}
       <button
