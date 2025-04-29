@@ -12,7 +12,7 @@ import { useAudio } from '@/contexts/AudioContext';
 
 const VisualizerWrapper: React.FC = () => {
     const { visualizerIndex } = useVisualizer();
-    const { isPlaying, audioRef } = useAudio();
+    const { isPlaying } = useAudio();
 
     if (!isPlaying) {
         return null;
