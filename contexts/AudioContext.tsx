@@ -3,7 +3,7 @@
 import { createContext, useContext, useRef, useEffect, useState } from 'react';
 
 interface AudioContextType {
-    audioRef: React.RefObject<HTMLAudioElement>;
+    audioRef: React.RefObject<HTMLAudioElement | null>;
     analyserRef: React.RefObject<AnalyserNode | null>;
     isPlaying: boolean;
 }
@@ -15,7 +15,7 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     const analyserRef = useRef<AnalyserNode | null>(null);
     const audioContextRef = useRef<AudioContext | null>(null);
     const sourceNodeRef = useRef<MediaElementAudioSourceNode | null>(null);
-    const [isPlaying, setIsPlaying] = useState(false); // <-- NEW
+    const [isPlaying, setIsPlaying] = useState(false);
 
     useEffect(() => {
         if (typeof window === 'undefined') return;
