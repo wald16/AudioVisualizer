@@ -47,9 +47,10 @@ const Visualizer4: React.FC = () => {
             }
 
             update(boost: number) {
-                for (let point of this.points) {
+                for (const point of this.points) {
                     point.phase += point.frequency + boost * 0.15;
                 }
+
             }
 
             draw(ctx: CanvasRenderingContext2D, boost: number) {
