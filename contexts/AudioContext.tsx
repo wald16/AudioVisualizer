@@ -3,12 +3,12 @@
 import { createContext, useContext, useRef, useEffect, useState } from 'react';
 
 interface AudioContextType {
-    audioRef: React.RefObject<HTMLAudioElement | null>;
+    audioRef: React.RefObject<HTMLAudioElement>;
     analyserRef: React.RefObject<AnalyserNode | null>;
     isPlaying: boolean;
 }
 
-const AudioContextApp = createContext<AudioContextType | undefined>(undefined);
+export const AudioContextApp = createContext<AudioContextType | undefined>(undefined);
 
 export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     const audioRef = useRef<HTMLAudioElement>(null);
