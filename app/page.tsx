@@ -22,7 +22,7 @@ function HomePageContent() {
     <div className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-[#1a1a2e] to-[#0e0e1a]">
       <Visualizer audioRef={audioRef} />
       <div className="z-10 text-center">
-        <h1 className="text-4xl md:text-6xl font-bold text-cyan-300 drop-shadow-lg mb-12 tracking-widest">
+        <h1 className="text-4xl md:text-6xl font-bold text-cyan-300 drop-shadow-lg mb-10 tracking-widest relative left-5">
           WALD
         </h1>
         <div className="flex flex-wrap gap-6 justify-center">
