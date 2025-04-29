@@ -25,7 +25,7 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
             if (!audioContextRef.current) {
                 audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
             }
-            if (!sourceNodeRef.current) {
+            if (!sourceNodeRef.current && audioRef.current) {
                 const source = audioContextRef.current.createMediaElementSource(audioRef.current);
                 const analyser = audioContextRef.current.createAnalyser();
                 analyser.fftSize = 512;
@@ -36,6 +36,7 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
                 sourceNodeRef.current = source;
                 analyserRef.current = analyser;
             }
+
 
             if (audioContextRef.current.state === 'suspended') {
                 await audioContextRef.current.resume();
