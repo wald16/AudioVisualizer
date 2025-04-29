@@ -51,7 +51,7 @@ const Visualizer1: React.FC = () => {
             update(pulse: number) {
                 this.x = this.baseX * (1 + pulse * 1);
                 this.y = this.baseY * (1 + pulse * 1);
-                this.z = this.baseZ * (1 + pulse * 1);
+                this.z = this.baseZ * (1 + pulse * 5);
             }
 
             rotateY(angle: number) {
@@ -64,7 +64,7 @@ const Visualizer1: React.FC = () => {
             }
 
             project(width: number, height: number) {
-                const scale = 400;
+                const scale = 300;
                 const perspective = scale / (scale + this.z * 100);
                 const projX = this.x * scale * perspective + width / 2;
                 const projY = this.y * scale * perspective + height / 2;
@@ -81,14 +81,14 @@ const Visualizer1: React.FC = () => {
 
             analyser.getByteFrequencyData(dataArray);
 
-            ctx.fillStyle = 'rgba(72, 16, 72, 0.08)';
+            ctx.fillStyle = 'rgba(72, 16, 72, 0.2)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             const bassRange = dataArray.slice(0, bufferLength / 4);
             const bassEnergy = bassRange.reduce((a, b) => a + b, 0) / bassRange.length;
             const pulse = bassEnergy / 255;
 
-            rotation += 0.004;
+            rotation += 0.008;
 
             for (const p of points) {
                 p.update(pulse);

@@ -26,14 +26,14 @@ const Visualizer2: React.FC = () => {
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
 
-        const colors = ['#00FFFF', '#FF00FF', '#FFFF00', '#00FF00'];
+        const colors = ['#6412bb', '#FF00FF', '#0005FF', '#00FF00'];
 
         const draw = () => {
             animationRef.current = requestAnimationFrame(draw);
 
             analyser.getByteFrequencyData(dataArray);
 
-            ctx.fillStyle = 'rgba(10, 10, 20, 0.08)';
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             const bassRange = dataArray.slice(0, bufferLength / 4);
@@ -45,8 +45,8 @@ const Visualizer2: React.FC = () => {
 
             const maxRadius = Math.min(centerX, centerY);
 
-            const ringCount = 5;
-            const angleStep = (Math.PI * 3) / 40;
+            const ringCount = 7;
+            const angleStep = (Math.PI * 3) / 30;
 
             for (let i = 0; i < ringCount; i++) {
                 const radius = (i + 1) * (maxRadius / ringCount) * (1 + pulse * 0.5);
@@ -66,7 +66,7 @@ const Visualizer2: React.FC = () => {
                 ctx.strokeStyle = color;
                 ctx.lineWidth = 2 + pulse * 5;
                 ctx.shadowBlur = 20;
-                ctx.shadowColor = color;
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.08)';
                 ctx.stroke();
             }
         };

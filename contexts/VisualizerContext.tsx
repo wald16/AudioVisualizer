@@ -13,7 +13,7 @@ export const VisualizerProvider = ({ children }: { children: ReactNode }) => {
     const [visualizerIndex, setVisualizerIndex] = useState(1);
 
     const nextVisualizer = () => {
-        setVisualizerIndex(prev => (prev % 3) + 1);
+        setVisualizerIndex(prev => (prev % 4) + 1);
     };
 
     return (

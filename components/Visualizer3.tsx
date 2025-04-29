@@ -41,7 +41,7 @@ const Visualizer3: React.FC = () => {
                 this.x = canvas.width / 2;
                 this.y = canvas.height / 2;
                 const angle = Math.random() * 2 * Math.PI;
-                this.baseSpeed = Math.random() * 1 + 0.5; // lower base speed
+                this.baseSpeed = Math.random() * 1 + 0.5;
                 this.velocityX = Math.cos(angle) * this.baseSpeed;
                 this.velocityY = Math.sin(angle) * this.baseSpeed;
                 this.size = Math.random() * 1.5 + 0.5;
@@ -49,20 +49,21 @@ const Visualizer3: React.FC = () => {
             }
 
             update(boost: number) {
-                this.x += this.velocityX * (1 + boost * 15); // boost strongly affects speed
-                this.y += this.velocityY * (1 + boost * 3);
+                const actualBoost = boost * boost; // << quadratic
+                this.x += this.velocityX * actualBoost * 40;
+                this.y += this.velocityY * actualBoost * 10;
             }
 
             draw(ctx: CanvasRenderingContext2D, boost: number) {
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size * (1 + boost * 2), 0, Math.PI * 2); // size also boosted
+                ctx.arc(this.x, this.y, this.size * (1 + boost * 2), 0, Math.PI * 2);
                 ctx.fillStyle = this.color;
                 ctx.shadowColor = this.color;
-                ctx.shadowBlur = 20 + boost * 500; // plasma glow increases with boost
+                ctx.shadowBlur = 20 + boost * 5;
                 ctx.fill();
-                ctx.shadowBlur = 0; // reset shadow
             }
         }
+
 
         function randomColor() {
             const colors = ['#FF00FF', '#00FFFF', '#FFFF00', '#FF0077', '#00FFAA'];
