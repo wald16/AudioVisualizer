@@ -2,10 +2,12 @@
 
 import React, { useEffect, useRef } from 'react';
 import { useAudio } from '@/contexts/AudioContext';
+import { useParty } from '@/contexts/PartyContext';
 
 const Visualizer1: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const { analyserRef } = useAudio();
+    const { partyMode } = useParty();
     const animationRef = useRef<number | null>(null);
 
     useEffect(() => {
@@ -48,10 +50,10 @@ const Visualizer1: React.FC = () => {
                 this.baseZ = this.z;
             }
 
-            update(pulse: number) {
-                this.x = this.baseX * (1 + pulse * 1);
-                this.y = this.baseY * (1 + pulse * 1);
-                this.z = this.baseZ * (1 + pulse * 5);
+            update(pulse: number, intensity: number) {
+                this.x = this.baseX * (1 + pulse * intensity);
+                this.y = this.baseY * (1 + pulse * intensity);
+                this.z = this.baseZ * (1 + pulse * intensity * 5);
             }
 
             rotateY(angle: number) {
@@ -64,7 +66,7 @@ const Visualizer1: React.FC = () => {
             }
 
             project(width: number, height: number) {
-                const scale = 300;
+                const scale = partyMode ? 300 : 300;
                 const perspective = scale / (scale + this.z * 100);
                 const projX = this.x * scale * perspective + width / 2;
                 const projY = this.y * scale * perspective + height / 2;
@@ -72,7 +74,8 @@ const Visualizer1: React.FC = () => {
             }
         }
 
-        for (let i = 0; i < 250; i++) {
+        const pointCount = partyMode ? 500 : 250;
+        for (let i = 0; i < pointCount; i++) {
             points.push(new Point());
         }
 
@@ -81,17 +84,24 @@ const Visualizer1: React.FC = () => {
 
             analyser.getByteFrequencyData(dataArray);
 
-            ctx.fillStyle = 'rgba(72, 16, 72, 0.2)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            if (!partyMode) {
+                ctx.fillStyle = 'rgba(72, 16, 72, 0.2)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else {
+                ctx.fillStyle = `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(
+                    Math.random() * 255
+                )}, ${Math.floor(Math.random() * 255)}, 0.1)`;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
 
             const bassRange = dataArray.slice(0, bufferLength / 4);
             const bassEnergy = bassRange.reduce((a, b) => a + b, 0) / bassRange.length;
             const pulse = bassEnergy / 255;
 
-            rotation += 0.008;
+            rotation += partyMode ? 0.01 : 0.008;
 
             for (const p of points) {
-                p.update(pulse);
+                p.update(pulse, partyMode ? 1 : 1);
                 p.rotateY(rotation);
             }
 
@@ -105,8 +115,12 @@ const Visualizer1: React.FC = () => {
 
                     if (distance < 120) {
                         ctx.beginPath();
-                        ctx.strokeStyle = `rgba(0,255,255,${(1 - distance / 120) * (pulse + 0.3)})`;
-                        ctx.lineWidth = (1 - distance / 120) * 2;
+                        ctx.strokeStyle = partyMode
+                            ? `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(
+                                Math.random() * 255
+                            )}, ${Math.floor(Math.random() * 255)}, ${(1 - distance / 120) * (pulse + 0.3)})`
+                            : `rgba(0,255,255,${(1 - distance / 120) * (pulse + 0.3)})`;
+                        ctx.lineWidth = (1 - distance / 120) * (partyMode ? 10 : 2);
                         ctx.moveTo(projectedPoints[i].projX, projectedPoints[i].projY);
                         ctx.lineTo(projectedPoints[j].projX, projectedPoints[j].projY);
                         ctx.stroke();
@@ -116,8 +130,10 @@ const Visualizer1: React.FC = () => {
 
             for (const p of projectedPoints) {
                 ctx.beginPath();
-                ctx.arc(p.projX, p.projY, 2 * p.perspective, 0, Math.PI * 2);
-                ctx.fillStyle = '#00FFFF';
+                ctx.arc(p.projX, p.projY, Math.max(1, 2 * p.perspective) * (partyMode ? 2 : 1), 0, Math.PI * 2);
+                ctx.fillStyle = partyMode
+                    ? `hsl(${Math.random() * 360}, 100%, 60%)`
+                    : '#00FFFF';
                 ctx.fill();
             }
         };
@@ -127,10 +143,10 @@ const Visualizer1: React.FC = () => {
         return () => {
             window.removeEventListener('resize', resizeCanvas);
             if (animationRef.current) {
-                cancelAnimationFrame(animationRef.current); // 🔥 Clean old visualizer when switching
+                cancelAnimationFrame(animationRef.current);
             }
         };
-    }, [analyserRef]);
+    }, [analyserRef, partyMode]);
 
     return (
         <canvas

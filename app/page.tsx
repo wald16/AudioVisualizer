@@ -7,12 +7,16 @@ import UploadButton from '@/components/UploadButton';
 import ChangeThemeButton from '@/components/ChangeThemeButton';
 import Visualizer from '@/components/VisualizerWrapper';
 import { useAudio } from '@/contexts/AudioContext';
+import { PartyProvider } from '@/contexts/PartyContext';
 
 export default function HomePage() {
   return (
-    <AudioProvider>
-      <HomePageContent />
-    </AudioProvider>
+    <PartyProvider>
+      <AudioProvider>
+        <HomePageContent />
+      </AudioProvider>
+    </PartyProvider>
+
   );
 }
 

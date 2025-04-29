@@ -2,6 +2,9 @@
 
 import React, { useEffect, useRef } from 'react';
 import { useAudio } from '@/contexts/AudioContext';
+import { useParty } from '@/contexts/PartyContext';
+
+
 
 const Visualizer4: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);

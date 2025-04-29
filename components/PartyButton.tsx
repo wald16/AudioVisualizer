@@ -1,10 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useParty } from '@/contexts/PartyContext';
 
 const PartyButton = () => {
+  const { togglePartyMode } = useParty();
+
   return (
     <StyledWrapper>
-      <button className="uiverse">
+      <button className="uiverse" onClick={togglePartyMode}>
         <div className="wrapper">
           <span>LOCURA</span>
           <div className="circle circle-12" />
