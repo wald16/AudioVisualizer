@@ -6,7 +6,7 @@ import { useAudio } from '@/contexts/AudioContext';
 const Visualizer2: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const { analyserRef } = useAudio();
-    const animationRef = useRef<number>();
+    const animationRef = useRef<number | null>(null);
 
     useEffect(() => {
         const canvas = canvasRef.current;
