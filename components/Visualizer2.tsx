@@ -2,11 +2,12 @@
 
 import React, { useEffect, useRef } from 'react';
 import { useAudio } from '@/contexts/AudioContext';
-
+import { useParty } from '@/contexts/PartyContext';
 
 const Visualizer2: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const { analyserRef } = useAudio();
+    const { partyMode } = useParty();
     const animationRef = useRef<number | null>(null);
 
     useEffect(() => {
@@ -27,7 +28,7 @@ const Visualizer2: React.FC = () => {
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
 
-        const colors = ['#6412bb', '#FF00FF', '#0005FF', '#00FF00'];
+        const baseColors = ['#6412bb', '#FF00FF', '#0005FF', '#00FF00'];
 
         const draw = () => {
             animationRef.current = requestAnimationFrame(draw);
@@ -46,15 +47,21 @@ const Visualizer2: React.FC = () => {
 
             const maxRadius = Math.min(centerX, centerY);
 
-            const ringCount = 7;
+            const ringCount = partyMode ? 14 : 7;
+
             const angleStep = (Math.PI * 3) / 30;
 
             for (let i = 0; i < ringCount; i++) {
-                const radius = (i + 1) * (maxRadius / ringCount) * (1 + pulse * 0.5);
-                const color = colors[i % colors.length];
+                const radius = (i + 1) * (maxRadius / ringCount) * (1 + pulse * (partyMode ? 1.5 : 0.5));
+                const color = partyMode
+                    ? baseColors[Math.floor(Math.random() * baseColors.length)] // random color each frame
+                    : baseColors[i % baseColors.length];
 
                 ctx.beginPath();
                 for (let a = 0; a < Math.PI * 2; a += angleStep) {
+                    const wave = partyMode
+                        ? 5 * Math.sin(a * 10 + pulse * 20) // more extreme waves
+                        : 0.2 * Math.sin(a * 10 + pulse * 10); // normal small waves
                     const x = centerX + Math.cos(a) * radius * (1 + 0.2 * Math.sin(a * 10 + pulse * 10));
                     const y = centerY + Math.sin(a) * radius * (1 + 0.2 * Math.sin(a * 10 + pulse * 10));
                     if (a === 0) {
@@ -65,7 +72,7 @@ const Visualizer2: React.FC = () => {
                 }
                 ctx.closePath();
                 ctx.strokeStyle = color;
-                ctx.lineWidth = 2 + pulse * 5;
+                ctx.lineWidth = 2;
                 ctx.shadowBlur = 20;
                 ctx.shadowColor = 'rgba(0, 0, 0, 0.08)';
                 ctx.stroke();
@@ -80,7 +87,7 @@ const Visualizer2: React.FC = () => {
                 cancelAnimationFrame(animationRef.current);
             }
         };
-    }, [analyserRef]);
+    }, [analyserRef, partyMode]);
 
     return (
         <canvas
