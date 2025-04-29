@@ -44,7 +44,7 @@ const Visualizer3: React.FC = () => {
                 this.baseSpeed = Math.random() * 1 + 0.5;
                 this.velocityX = Math.cos(angle) * this.baseSpeed;
                 this.velocityY = Math.sin(angle) * this.baseSpeed;
-                this.size = Math.random() * 1.5 + 0.5;
+                this.size = Math.random() * 3.5 + 0.5;
                 this.color = randomColor();
             }
 

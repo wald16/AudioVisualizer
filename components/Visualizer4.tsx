@@ -88,7 +88,7 @@ const Visualizer4: React.FC = () => {
 
             analyser.getByteFrequencyData(dataArray);
 
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.82)';
+            ctx.fillStyle = 'rgba(188, 183, 183, 0.82)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             const bassRange = dataArray.slice(0, bufferLength / 3);
