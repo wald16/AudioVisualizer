@@ -20,10 +20,11 @@ const VisualizerWrapper: React.FC = () => {
 
     return (
         <div>
-            {visualizerIndex === 1 && <Visualizer1 audioRef={audioRef} />}
-            {visualizerIndex === 2 && <Visualizer2 audioRef={audioRef} />}
+            {visualizerIndex === 1 && <Visualizer1 />}
+            {visualizerIndex === 2 && <Visualizer2 />}
             {visualizerIndex === 3 && <Visualizer3 />}
             {visualizerIndex === 4 && <Visualizer4 />}
+
 
 
         </div>
