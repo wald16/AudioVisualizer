@@ -3,7 +3,7 @@
 import { createContext, useContext, useRef, useEffect, useState } from 'react';
 
 interface AudioContextType {
-    audioRef: React.RefObject<HTMLAudioElement>;
+    audioRef: React.RefObject<HTMLAudioElement | null>;
     analyserRef: React.RefObject<AnalyserNode | null>;
     isPlaying: boolean;
 }
