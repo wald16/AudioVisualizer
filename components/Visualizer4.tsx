@@ -2,12 +2,12 @@
 
 import React, { useEffect, useRef } from 'react';
 import { useAudio } from '@/contexts/AudioContext';
-
-
+import { useParty } from '@/contexts/PartyContext';
 
 const Visualizer4: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const { analyserRef } = useAudio();
+    const { partyMode } = useParty();
     const animationRef = useRef<number | null>(null);
 
     useEffect(() => {
@@ -40,12 +40,12 @@ const Visualizer4: React.FC = () => {
                     this.points.push({
                         x,
                         y: canvas!.height / 2,
-                        amplitude: Math.random() * 20 + 60,
-                        frequency: Math.random() * 0.02 + 0.005,
+                        amplitude: partyMode ? Math.random() * 180 + 60 : Math.random() * 20 + 60,
+                        frequency: partyMode ? Math.random() * 0.02 + 0.005 : Math.random() * 0.02 + 0.005,
                         phase: Math.random() * Math.PI * 2,
                     });
                 }
-                this.color = randomDarkColor();
+                this.color = randomColor();
             }
 
             update(boost: number) {
@@ -68,20 +68,20 @@ const Visualizer4: React.FC = () => {
                 }
 
                 ctx.strokeStyle = this.color;
-                ctx.lineWidth = 2 + boost * 10;
+                ctx.lineWidth = partyMode ? 6 + boost * 20 : 2 + boost * 10;
                 ctx.shadowColor = this.color;
-                ctx.shadowBlur = 20 + boost * 10;
+                ctx.shadowBlur = partyMode ? 50 + boost * 20 : 20 + boost * 20;
                 ctx.stroke();
                 ctx.shadowBlur = 0;
             }
         }
 
-        function randomDarkColor() {
-            const colors = ['#960896', '#222244', '#440022', '#112233', '#2CB92C'];
+        function randomColor() {
+            const colors = ['#FF00FF', '#00FFFF', '#FFFF00', '#FF0077', '#00FFAA'];
             return colors[Math.floor(Math.random() * colors.length)];
         }
 
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < (partyMode ? 2 : 5); i++) {
             snakes.push(new Snake());
         }
 
@@ -90,7 +90,7 @@ const Visualizer4: React.FC = () => {
 
             analyser.getByteFrequencyData(dataArray);
 
-            ctx.fillStyle = 'rgba(188, 183, 183, 0.82)';
+            ctx.fillStyle = partyMode ? 'rgba(0, 0, 0, 0.08)' : 'rgba(188, 183, 183, 0.82)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             const bassRange = dataArray.slice(0, bufferLength / 3);
@@ -111,7 +111,7 @@ const Visualizer4: React.FC = () => {
                 cancelAnimationFrame(animationRef.current);
             }
         };
-    }, [analyserRef]);
+    }, [analyserRef, partyMode]);
 
     return (
         <canvas
