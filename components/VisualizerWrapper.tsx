@@ -19,7 +19,7 @@ const VisualizerWrapper: React.FC = () => {
     }
 
     return (
-        <div>
+        <div className='absolute inset-0 z-0'>
             {visualizerIndex === 1 && <Visualizer1 />}
             {visualizerIndex === 2 && <Visualizer2 />}
             {visualizerIndex === 3 && <Visualizer3 />}

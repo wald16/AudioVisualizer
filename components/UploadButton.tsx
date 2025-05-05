@@ -46,10 +46,12 @@ const UploadButton = () => {
       </button>
       <input
         type="file"
-        accept="audio/*"
+        accept="audio/mp3, audio/mpeg, audio/wav, audio/ogg"
         ref={fileInputRef}
         className="hidden"
         onChange={handleFileChange}
+        title="Upload audio file"
+
       />
     </StyledWrapper>
   );
