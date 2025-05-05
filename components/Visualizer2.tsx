@@ -59,9 +59,6 @@ const Visualizer2: React.FC = () => {
 
                 ctx.beginPath();
                 for (let a = 0; a < Math.PI * 2; a += angleStep) {
-                    const wave = partyMode
-                        ? 5 * Math.sin(a * 10 + pulse * 20) // more extreme waves
-                        : 0.2 * Math.sin(a * 10 + pulse * 10); // normal small waves
                     const x = centerX + Math.cos(a) * radius * (1 + 0.2 * Math.sin(a * 10 + pulse * 10));
                     const y = centerY + Math.sin(a) * radius * (1 + 0.2 * Math.sin(a * 10 + pulse * 10));
                     if (a === 0) {
